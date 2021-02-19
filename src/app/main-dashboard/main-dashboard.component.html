@@ -1,0 +1,12 @@
+<h1 style="display: flex; justify-content: center; margin: 3% 0;">Weather check</h1>
+<div style="width: 75%; margin: auto;">
+  <app-new-city *ngFor="let weather of allWeather|async"
+    [weatherDetails]="currentWeather"
+    (weatherAddEvent)="addWeather($event)">
+  </app-new-city>
+  <div>City</div>
+  <div #appenHere></div>
+  <div>
+    <ng-container>Weather in:</ng-container>
+  </div>
+</div>
