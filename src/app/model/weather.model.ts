@@ -1,4 +1,4 @@
 export interface Weather {
-  city : string;
-  units : string;
+  city: string;
+  units: string;
 }
