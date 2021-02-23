@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { WeatherEffect } from './effect/effect';
 import { MainDashboardComponent } from './main-dashboard/main-dashboard.component';
 import { MaterialModule } from './material.modules';
+import { CustomMeasurePipe } from './model/measure.pipe';
 import { NewCityComponent } from './new-city/new-city.component';
 import { reducer } from './reducer/reducer';
 
@@ -20,7 +21,8 @@ import { reducer } from './reducer/reducer';
   declarations: [
     AppComponent,
     MainDashboardComponent,
-    NewCityComponent
+    NewCityComponent,
+    CustomMeasurePipe,
   ],
   imports: [
     BrowserModule,

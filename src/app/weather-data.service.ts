@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { WeatherDetails } from './model/weather-details.model';
 import { Weather } from './model/weather.model';
 import { WeatherService } from './weather.service';
@@ -8,23 +9,27 @@ import { WeatherService } from './weather.service';
 })
 export class WeatherDataService {
 
-  weatherData: WeatherDetails[];
+  weatherData: BehaviorSubject<WeatherDetails[]>;
   currentWeather: WeatherDetails;
+  newWeather: WeatherDetails;
 
   constructor(private weatherService: WeatherService) {
-    this.weatherData = [];
-    this.currentWeather = {
+    this.newWeather = {
       city: '',
       temperature: 0,
       status: '',
       icon: '',
       units: 'standard'
     };
+    this.currentWeather = this.newWeather;
+    this.weatherData = new BehaviorSubject<WeatherDetails[]>([this.currentWeather]);
   }
 
-  addWeather(weather: Weather): WeatherDetails{
+  addWeather(weather: Weather, isNotLastElement: boolean): void {
+
     this.weatherService.getWeather(weather).subscribe(data => {
-      if (data.name) {
+      console.log(data.status);
+      if (data.cod) {
         this.currentWeather = {
           city: data.name,
           temperature: data.main.temp,
@@ -32,16 +37,22 @@ export class WeatherDataService {
           status: data.weather[0].description,
           icon: data.weather[0].icon
         };
-        this.weatherData.push(this.currentWeather);
+        const tempArr: WeatherDetails[] = [];
+        tempArr.push(...this.weatherData.getValue());
+        tempArr[this.weatherData.getValue().length - 1] = this.currentWeather;
+        if (isNotLastElement) {
+          tempArr.push(this.newWeather);
+        }
+        this.weatherData.next(tempArr);
+
       }
-      else{
-        alert('Wrong city input');
+      else {
+        alert('Wrong City Input');
       }
     });
-    return this.currentWeather;
   }
 
-  getWeathers(): WeatherDetails[] {
+  getWeathers(): BehaviorSubject<WeatherDetails[]> {
     return this.weatherData;
   }
 }
