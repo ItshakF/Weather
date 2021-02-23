@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Weather } from './model/weather.model';
 
 @Injectable({
@@ -16,6 +17,10 @@ export class WeatherService {
 
   getWeather(weather: Weather): Observable<any> {
     return this.httpClient.get('http://api.openweathermap.org/data/2.5/weather?q=' +  weather.city +
-      '&appid=' + this.apiKey + '&units=' + weather.units );
+      '&appid=' + this.apiKey + '&units=' + weather.units )
+      .pipe(catchError(val => {
+        console.log(val);
+        return of(val);
+      }));
   }
 }

@@ -16,8 +16,7 @@ interface Unit {
 export class NewCityComponent implements OnInit {
 
   @Output() weatherAddEvent: EventEmitter<Weather>;
-  @Input()
-  isDisabled: boolean;
+  @Input() isDisabled: boolean;
   @Input()
   weatherDetails!: WeatherDetails;
   city: string;
@@ -40,7 +39,6 @@ export class NewCityComponent implements OnInit {
   }
 
   addNewWeather(): void {
-    console.log('add');
     this.isDisabled = true;
     this.weatherAddEvent.emit({ city: this.city, units: this.unit});
   }
